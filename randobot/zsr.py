@@ -1,20 +1,17 @@
 import json
 import requests
-import time
-
 
 class ZSR:
     """
-    Class for interacting with ootrandomizer.com to generate seeds and available presets.
+    Class for interacting with mmrandomizer.com to generate seeds and available presets.
     """
-    seed_public = 'https://ootrandomizer.com/seed/get?id=%(id)s'
-    seed_endpoint = 'https://ootrandomizer.com/api/v2/seed/create'
-    status_endpoint = 'https://ootrandomizer.com/api/v2/seed/status'
-    details_endpoint = 'https://ootrandomizer.com/api/v2/seed/details'
-    password_endpoint = 'https://ootrandomizer.com/api/v2/seed/pw'
-    version_endpoint = 'https://ootrandomizer.com/api/version'
-    settings_endpoint = 'https://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/release/data/presets_default.json'
-    settings_dev_endpoint = 'https://raw.githubusercontent.com/TestRunnerSRL/OoT-Randomizer/Dev/data/presets_default.json'
+    seed_public = 'https://mmrandomizer.com/seed/get?id=%(id)s'
+    seed_endpoint = 'https://mmrandomizer.com/api/v2/seed/create'
+    status_endpoint = 'https://mmrandomizer.com/api/v2/seed/status'
+    details_endpoint = 'https://mmrandomizer.com/api/v2/seed/details'
+    version_endpoint = 'https://mmrandomizer.com/api/version'
+    settings_endpoint = 'https://raw.githubusercontent.com/ZoeyZolotova/mm-rando/refs/heads/master/MMR.Web.Config/presets_default.json'
+    settings_dev_endpoint = 'https://raw.githubusercontent.com/ZoeyZolotova/mm-rando/refs/heads/dev/MMR.Web.Config/presets_default.json'
 
     hash_map = {
         'Beans': 'HashBeans',
@@ -51,16 +48,8 @@ class ZSR:
         'Stone of Agony': 'HashStoneOfAgony',
     }
 
-    notes_map = {
-        'A': 'NoteA',
-        'C down':'NoteCdown',
-        'C up':'NoteCup',
-        'C left':'NoteCleft',
-        'C right':'NoteCright',
-    }
-
-    def __init__(self, ootr_api_key):
-        self.ootr_api_key = ootr_api_key
+    def __init__(self, mmr_api_key):
+        self.mmr_api_key = mmr_api_key
         self.presets = self.load_presets()
         self.presets_dev = self.load_presets(dev=True)
         self.last_known_dev_version = None
@@ -94,7 +83,7 @@ class ZSR:
             return latest_dev_version, True
         return latest_dev_version, False
 
-    def roll_seed(self, preset, encrypt, dev, password=False):
+    def roll_seed(self, preset, encrypt, dev):
         """
         Generate a seed and return its public URL.
         """
@@ -107,14 +96,12 @@ class ZSR:
             req_body = json.dumps(self.presets[preset]['settings'])
 
         params = {
-            'key': self.ootr_api_key,
+            'key': self.mmr_api_key,
         }
         if encrypt and not dev:
             params['encrypt'] = 'true'
         if encrypt and dev:
             params['locked'] = 'true'
-        if password:
-            params['passwordLock'] = 'true'
         if dev:
             params['version'] = 'dev_' + latest_dev_version
         data = requests.post(self.seed_endpoint, req_body, params=params,
@@ -124,14 +111,14 @@ class ZSR:
     def get_status(self, seed_id):
         data = requests.get(self.status_endpoint, params={
             'id': seed_id,
-            'key': self.ootr_api_key,
+            'key': self.mmr_api_key,
         }).json()
         return data['status']
 
     def get_hash(self, seed_id):
         data = requests.get(self.details_endpoint, params={
             'id': seed_id,
-            'key': self.ootr_api_key,
+            'key': self.mmr_api_key,
         }).json()
         try:
             settings = json.loads(data.get('settingsLog'))
@@ -141,31 +128,3 @@ class ZSR:
             self.hash_map.get(item, item)
             for item in settings['file_hash']
         )
-
-    def get_password(self, seed_id, retries=3, delay=2):
-        """
-        Grab password for seed with active password.
-
-        Tries to retrieve the password a specified number of times,
-        with a delay between attempts. Returns None if unsuccessful.
-        """
-        for attempt in range(retries):
-            try:
-                data = requests.get(self.password_endpoint, params={
-                    'id': seed_id,
-                    'key': self.ootr_api_key,
-                }, timeout=5)
-
-                data.raise_for_status()
-
-                password_notes = data.json().get('pw')
-
-                return ' '.join(
-                    self.notes_map.get(item, item)
-                    for item in password_notes
-                )
-            except (TypeError, ValueError, requests.RequestException):
-                if attempt < retries - 1:
-                    time.sleep(delay)
-                else:
-                    return None

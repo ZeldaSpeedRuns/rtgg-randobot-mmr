@@ -9,9 +9,9 @@ class RandoBot(Bot):
     """
     RandoBot base class.
     """
-    def __init__(self, ootr_api_key, *args, **kwargs):
+    def __init__(self, mmr_api_key, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.zsr = ZSR(ootr_api_key)
+        self.zsr = ZSR(mmr_api_key)
         self.midos_house = MidosHouse()
 
     def get_handler_class(self):

@@ -1,12 +1,12 @@
 # RandoBot commands
 
-These are the commands currently supported by OoTR's RandoBot.
+These are the commands currently supported by MMR's RandoBot.
 
 ## !seed
 
 Usable by: anyone (unless lock is present)
 
-Roll a race seed on ootrandomizer.com using the specified preset (if given) and
+Roll a race seed on mmrandomizer.com using the specified preset (if given) and
 post a link to the generated seed in the race information.
 
 Available presets can be checked using the `!presets` command. If no preset is
@@ -34,7 +34,7 @@ The bot will print out a list of available presets for use with the `!seed` or
 `!spoilerseed` commands. Each preset is usually a single word, e.g. "s4" or
 "weekly".
 
-Presets are set by ootrandomizer.com and are not controlled by the bot itself.
+Presets are set by mmrandomizer.com and are not controlled by the bot itself.
 
 ## !lock
 
@@ -70,20 +70,3 @@ immediately if there is a ping.
 
 To prevent spam or misuse, it is also recommended that the **"Allow non-entrant
 chat"** race setting is disabled when conducting a race using FPA.
-
-## !password
-
-Usable by: **varies**
-
-Enable or disable the password functionality. By default, this is disabled, but it 
-can be toggled on by a race monitor or moderator with `!password on`. 
-It can be toggled off again with `!password off`.
-
-When enabled, the seed is generated with a random 6 digit password consisting of
-ocarina notes. This password is required to start a file in the generated seed.
-
-Once this setting is enabled, Randobot will publish the password at the start of the
-race countdown next to the seed hash in the race room information.
-
-If the automated password retrieval after rolling the seed, manual acquiry can be attempted using `!password get`. 
-Note that a race with a password activated seed can not be started without a password.

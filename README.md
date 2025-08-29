@@ -1,7 +1,7 @@
-# ootr-randobot
+# mmr-randobot
 
 A [racetime.gg](https://racetime.gg) chat bot application for automatically 
-generating [OoT Randomizer](https://ootrandomizer.com/) seeds in race rooms.
+generating [MM Randomizer](https://mmrandomizer.com/) seeds in race rooms.
 
 ## How to get started
 
@@ -22,12 +22,12 @@ possible to use this bot without suitable API access.
    
 ### Usage
 
-Run `randobot <ootr_api_key> <category_slug> <client_id> <client_secret>`,
+Run `randobot <mmr_api_key> <category_slug> <client_id> <client_secret>`,
 where:
 
-* `<ootr_api_key>` is a valid API key for ootrandomizer.com (note: this is
+* `<mmr_api_key>` is a valid API key for mmrandomizer.com (note: this is
   a private API, access is limited to trusted individuals).
 * `<category_slug>` is the slug of the racetime.gg category the bot should
-  operate in, i.e. `ootr`
+  operate in, i.e. `mmr`
 * `<client_id>` is the OAuth2 client ID for this bot on racetime.gg
 * `<client_secret>` is the OAuth2 client secret for this bot on racetime.gg
