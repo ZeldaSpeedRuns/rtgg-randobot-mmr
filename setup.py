@@ -21,6 +21,7 @@ setup(
     install_requires=[
         'gql[aiohttp]>=3.4.0,<4.0',
         'isodate>=0.6.1,<0.7',
+        'python-dotenv>=0.19.0',
         'racetime_bot>=1.5.0,<3.0',
     ],
     packages=find_packages(),
