@@ -78,6 +78,7 @@ class ZSR:
         "ITEM_MIRROR_SHIELD": "HashMirrorShield",
         "ITEM_QUIVER_40": "HashQuiver",
         "ITEM_ADULT_WALLET": "HashAdultWallet",
+        "ITEM_BOMBERS_NOTEBOOK": "HashBombersNote",
         "0x61": "HashBombersNote"
     }
 
