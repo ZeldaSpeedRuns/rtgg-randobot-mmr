@@ -84,14 +84,6 @@ class RandoHandler(RaceHandler):
             # Ignore all rooms opened by bots, allowing The Mayor (https://github.com/TreZc0/hyrule-town-hall) to open rooms in official goals.
             # This is okay because RandoBot does not open any rooms.
             return True
-        goal_name = self.data.get('goal', {}).get('name')
-        goal_is_custom = self.data.get('goal', {}).get('custom', False)
-        if goal_is_custom:
-            if await self.midos_house.handles_custom_goal(goal_name):
-                return True  # handled by Mido
-        else:
-            if goal_name in ('Triforce Blitz'):
-                return True  # handled by Mido
         return await super().should_stop()
 
     async def begin(self):
