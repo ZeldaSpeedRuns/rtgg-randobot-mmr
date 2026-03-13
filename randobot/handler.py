@@ -240,7 +240,7 @@ class RandoHandler(RaceHandler):
         preset = 'Modern'
 
         if len(args) > 0:
-            preset = args[0]
+            preset = ' '.join(args)
 
         if self.state.get('locked') and not can_monitor(message):
             await self.send_message(
