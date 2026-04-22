@@ -107,7 +107,9 @@ class ZSR:
             if latest_version != branch.version:
                 branch.update_version(latest_version)
                 branch.load_presets()
-        req_body = json.dumps(branch.presets[preset]['settings'])
+        settings = dict(branch.presets[preset]['settings'])
+        settings['OutputSettings.GenerateSpoilerLog'] = True
+        req_body = json.dumps(settings)
 
         params = {
             'key': self.mmr_api_key,
