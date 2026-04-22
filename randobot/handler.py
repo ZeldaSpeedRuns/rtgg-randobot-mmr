@@ -178,7 +178,7 @@ class RandoHandler(RaceHandler):
         """
         if self._race_in_progress():
             return
-        await self.roll_and_send(args, message, branch=self.randomizer_branch, encrypt=True)
+        await self.roll_and_send(args, message, branch=self.randomizer_branch, locked=True)
 
     async def ex_spoilerseed(self, args, message):
         """
@@ -186,7 +186,7 @@ class RandoHandler(RaceHandler):
         """
         if self._race_in_progress():
             return
-        await self.roll_and_send(args, message, branch=self.randomizer_branch, encrypt=False)
+        await self.roll_and_send(args, message, branch=self.randomizer_branch, locked=False)
 
     async def ex_presets(self, args, message):
         """
@@ -231,7 +231,7 @@ class RandoHandler(RaceHandler):
             reply_to = message.get('user', {}).get('name', 'friend')
             await self.send_message(resp % {'reply_to': reply_to})
 
-    async def roll_and_send(self, args, message, branch, encrypt):
+    async def roll_and_send(self, args, message, branch, locked):
         """
         Read an incoming !seed command and generate a new seed if
         valid.
@@ -258,11 +258,11 @@ class RandoHandler(RaceHandler):
         await self.roll(
             preset=preset,
             branch=branch,
-            encrypt=encrypt,
+            locked=locked,
             reply_to=reply_to,
         )
 
-    async def roll(self, preset, branch, encrypt, reply_to):
+    async def roll(self, preset, branch, locked, reply_to):
         """
         Generate a seed and send it to the race room.
         """
@@ -281,7 +281,7 @@ class RandoHandler(RaceHandler):
             )
             return
 
-        seed_id, seed_uri = self.zsr.roll_seed(preset_key, branch, encrypt)
+        seed_id, seed_uri = self.zsr.roll_seed(preset_key, branch, locked)
 
         await self.send_message(
             '%(reply_to)s, your seed is being rolled: %(seed_uri)s'

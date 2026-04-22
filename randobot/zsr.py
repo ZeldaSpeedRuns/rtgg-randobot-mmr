@@ -96,7 +96,7 @@ class ZSR:
                 settings_endpoint=self.valid_versions[i][3]
             )
 
-    def roll_seed(self, preset, branch, encrypt):
+    def roll_seed(self, preset, branch, locked):
         """
         Generate a seed and return its public URL.
         """
@@ -112,9 +112,7 @@ class ZSR:
         params = {
             'key': self.mmr_api_key,
         }
-        if encrypt and not dev:
-            params['encrypt'] = 'true'
-        if encrypt and dev:
+        if locked:
             params['locked'] = 'true'
         if dev:
             params['version'] = branch.mmr_name + '_' + branch.version
